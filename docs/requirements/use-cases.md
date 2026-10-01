@@ -1307,6 +1307,67 @@ No two teams can have the same name. The team name must be unique. The course ad
 **Assumptions:** AS-one-section-per-student (an invitation is keyed by the invited address alone, which is unambiguous only because a student is invited to one course section)
 **Open Issues:**
 
+### **UC-STU-remind-non-submitters: The course admin/instructor reminds students who have not submitted**
+
+**UC ID and Name:** UC-STU-remind-non-submitters: Remind students who have not submitted **Created By:** Whitney **Date Created:** 10/01/2026 **Primary Actor:** course admin, instructor **Secondary Actors:** student **Trigger:** The user indicates to view the students who have not submitted for the current week. **Description:** The user wants to see which students have not submitted their weekly activity report or peer evaluation for the current week, so that she knows who is falling behind, and the course admin can remind only those students instead of the whole course section.
+
+**Preconditions:**
+
+- PRE-1. The user is logged into the system.
+- PRE-2. The user is the course admin or an instructor of the course section (BR-section-scoped-access).
+
+**Postconditions:**
+
+- POST-1. The user is shown the non-submitters for the current week, separately for each artifact, and a separate note of students not assigned to a team.
+- POST-2. If the course admin chose to send, each selected student who is still a non-submitter has been emailed a reminder naming only her own missing artifacts, and the course admin has been told which students were skipped or could not be emailed.
+
+**Main Success Scenario:**
+
+1. The user indicates to view the students who have not submitted for a course section.
+2. The system determines the current week of the course section.
+3. The system displays, separately for the weekly activity report and the peer evaluation, the students who have not submitted that artifact, according to the "Non-submitter definition" in the Associated Information of this use case.
+4. The system displays, in a separate note, the students in the course section who are not assigned to a team.
+5. The course admin selects which of the listed students to remind.
+6. The system displays the reminder email and asks the course admin to confirm sending it.
+7. The course admin confirms.
+8. The system checks again whether each selected student is still a non-submitter, and sends a reminder to each one who is, naming only the artifacts she is missing.
+9. The system informs the course admin how many reminders were sent.
+10. Use case ends.
+
+**Extensions:**
+
+- **2a. The current week is not an active week:**
+  * 2a1. The system does not list weekly activity report non-submitters.
+  * 2a2. If the previous week was active, the system still lists peer evaluation non-submitters (BR-active-weeks, BR-evaluation-submission-window); otherwise it informs the user that nothing is due this week and the use case ends.
+- **3a. Every student has submitted both artifacts:**
+  * 3a1. The system informs the user that no student is missing a submission this week.
+  * 3a2. The system still displays the note of students not assigned to a team, if any, and the use case ends.
+- **4a. The user is an instructor, not the course admin:**
+  * 4a1. The system does not offer to send reminders (BR-reminders-admin-only).
+  * 4a2. Use case ends.
+- **5a. The submission window for an artifact has closed:**
+  * 5a1. Because the user views only the current week, during which both artifacts remain submittable (BR-evaluation-submission-window, AS-war-submittable-all-week), this should not arise; if a window rule changes so that it does, the system still lists the students who did not submit but does not offer reminders for that artifact (BR-reminder-while-open).
+- **8a. A selected student has already been sent a reminder for that artifact today (BR-reminder-limit):**
+  * 8a1. The system does not send her another reminder for that artifact.
+  * 8a2. The system tells the course admin which students were skipped for this reason.
+  * 8a3. The system continues with the remaining selected students.
+- **8b. A selected student has submitted since the list was displayed:**
+  * 8b1. The system does not send her a reminder for that artifact.
+  * 8b2. The system tells the course admin which students were skipped for this reason.
+- **8c. The system cannot email one or more selected students:**
+  * 8c1. The system continues with the remaining students, so one undeliverable address does not cost the others their reminder.
+  * 8c2. The system tells the course admin which students could not be emailed.
+
+**Priority:** Medium **Frequency of Use:** Course admin and instructors, a few times per active week. **Business Rules:** BR-section-scoped-access, BR-role-based-access, BR-team-assignment-required, BR-student-lifecycle, BR-active-weeks, BR-evaluation-submission-window, BR-reminders-admin-only, BR-reminder-limit, BR-reminder-while-open
+
+**Associated Information:**
+
+- Non-submitter definition: judged separately for each artifact. A student is a non-submitter if she is active, assigned to a team, and, at the moment the system checks, has no submission of (a) her weekly activity report for the current week, or (b) her peer evaluation of the previous week, due during the current week. A student has submitted her weekly activity report for a week if she has at least one activity recorded for that week, whatever its status. A student has submitted her peer evaluation only if she has evaluated every member of her team, herself included (UC-EVA-submit-evaluation); one who has evaluated some but not all of them has not. A submission that was deleted does not count. Students who cannot submit (unassigned or deactivated) are never non-submitters.
+- Privacy: submission status is a student record (CO-ferpa). The list is shown only to users permitted by BR-section-scoped-access. Each reminder is sent to one student individually and names only her own missing artifacts, never another student.
+- Instructors see the same list as the course admin, but only for course sections they are assigned to.
+
+**Related Use Cases:** UC-STU-view-pending-invitations; UC-EVA-submit-evaluation; UC-SEC-setup-active-weeks. The scheduled weekly reminder skipping students who have already submitted is a separate use case, not written here. **Assumptions:** AS-war-submittable-all-week: no business rule sets a deadline for a weekly activity report, so this use case assumes a student can submit her current week's report at any time during that week. **Open Issues:**
+
 ### **UC-STU-find-students: The course admin/instructor finds students**
 
 **UC ID and Name:** UC-STU-find-students: Find students
