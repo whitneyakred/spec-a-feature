@@ -47,7 +47,7 @@ These business rules apply across Project Pulse. The course-administration rules
 - **BR-evaluation-private-comment:** When submitting a peer evaluation, the evaluator may optionally include a private comment about the teammate being evaluated. A private comment is visible only to the instructor assigned to the course section (and course admin, per BR-role-based-access); it is never shown to the evaluatee or any other student on the team. Private comments exist to give students a safe channel to raise concerns early.
 - **BR-evaluation-visibility:** For a peer evaluation, a student may see only her own rubric criterion scores, public comments (not private comments — see BR-evaluation-private-comment), and overall grade.
 - **BR-reminders-admin-only:** Only a course admin may send a reminder to students who have not submitted; an instructor may view who has not submitted but may not send reminders.
-- **BR-reminder-limit:** A student may be sent at most one manual reminder per artifact (weekly activity report or peer evaluation) per day. The scheduled weekly reminder does not count toward this limit.
+- **BR-reminder-limit:** A student may be sent at most one manual reminder per artifact (weekly activity report or peer evaluation) per day. The scheduled weekly reminder does not count toward this limit. A day is a calendar day in the application's configured time zone, the same one the scheduled weekly reminder uses.
 - **BR-reminder-while-open:** A reminder may be sent for an artifact only while the student can still submit it.
 
 # **Access and Ownership**
